@@ -1,10 +1,14 @@
 import pygame, sys
+from entity import Entity, Object
 
 pygame.init()
-display = pygame.display.set_mode((800, 800))
+display = pygame.display.set_mode((640, 480))
 pygame.display.set_caption("Delivery")
 
 clock = pygame.time.Clock()
+
+entity = Entity(display, 320, 320)
+transport = Object(display, 96, 96)
 
 run = True
 while run:
@@ -14,7 +18,11 @@ while run:
             run = False
             break
 
-    display.fill((175, 0, 160))
+    entity.move()
+    transport.move(200, 200)
+    entity.draw()
+    transport.draw()
+    
     pygame.display.update()
 
 pygame.quit()

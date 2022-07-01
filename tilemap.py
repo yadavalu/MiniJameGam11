@@ -1,19 +1,18 @@
 import pygame
-from random import randint
 from gfx.map1 import tiles
 import spritesheet
 
-ss = spritesheet.spritesheet("gfx/tilemap.png")
-images = []
-images = ss.images_at((0, 0, 32, 32), (32, 0, 32, 32), (64, 0, 32, 32), (96, 0, 32, 32), colorkey=(255, 255, 255))
-
-for tile in tiles:
-    match tile: # todo
-        case 0:
-            pass
-        case 1:
-            pass
-        case 2:
-            pass
-        case 3:
-            pass
+def draw_tiles(screen):
+    image = pygame.image.load("gfx/tilemap.png")
+    rect = image.convert().get_rect()
+    for tile in tiles:
+        match tile:
+            case 0:
+                rect.top = 0
+            case 1:
+                rect.top = 32
+            case 2:
+                rect.top = 64
+            case 3:
+                rect.top = 96
+        screen.blit(image, rect)

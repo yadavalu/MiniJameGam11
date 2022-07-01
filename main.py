@@ -1,5 +1,6 @@
 import pygame, sys
 from entity import Entity, Object
+from tilemap import *
 
 pygame.init()
 display = pygame.display.set_mode((640, 480))
@@ -22,7 +23,7 @@ while run:
     transport.move(200, 200)
     entity.draw()
     transport.draw()
-    
+    draw_tiles(display)
     pygame.display.update()
 
 pygame.quit()

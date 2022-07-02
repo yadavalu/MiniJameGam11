@@ -1,6 +1,7 @@
 import pygame, sys
 from entity import Entity, Object
-from tilemap import *
+from tilemap import TileMap
+from gfx.map1 import tiles
 
 pygame.init()
 display = pygame.display.set_mode((640, 640))
@@ -10,6 +11,8 @@ clock = pygame.time.Clock()
 
 entity = Entity(display, 320, 320)
 transport = Object(display, "delivery", 96, 96)
+tilemap = TileMap(display, tiles, "gfx/tilemap.png")
+tilemap.load_tiles()
 
 run = True
 while run:
@@ -19,9 +22,8 @@ while run:
             run = False
             break
 
-    draw_tiles(display)
+    tilemap.draw_tiles()
     entity.move([transport])
-    transport.move(192, 192)
     entity.draw()
     transport.draw()
     pygame.display.update()

@@ -1,19 +1,32 @@
 import pygame
-from gfx.map1 import tiles
 
-def draw_tiles(screen):
-    image = pygame.image.load("gfx/tilemap.png")
-    rect = pygame.Rect(0, 0, 32, 32)
-    for rows in range(len(tiles)):
-        for cols in range(len(tiles[rows])):
-            match tiles[rows][cols]:
-                case 0:
-                    rect.x = 0
-                case 1:
-                    rect.x = 32
-                case 2:
-                    rect.x = 64
-                case 3:
-                    rect.x = 96
-            img = image.subsurface(rect)
-            screen.blit(img, (32 * rows, 32 * cols))
+class TileMap:
+    def __init__(self, screen, tiles, image_path):
+        self.screen = screen
+
+        self.image = pygame.image.load(image_path)
+        self.images = []
+        self.rect = pygame.Rect(0, 0, 32, 32)
+        self.tiles = tiles
+
+    def load_tiles(self):
+        for rows in range(len(self.tiles)):
+            temp_images = []
+            for cols in range(len(self.tiles[rows])):
+                match self.tiles[rows][cols]:
+                    case 0:
+                        self.rect.x = 0
+                    case 1:
+                        self.rect.x = 32
+                    case 2:
+                        self.rect.x = 64
+                    case 3:
+                        self.rect.x = 96
+
+                temp_images.append(self.image.subsurface(self.rect))
+            self.images.append(temp_images)
+
+    def draw_tiles(self):
+        for rows in range(len(self.tiles)):
+            for cols in range(len(self.tiles[rows])):
+                self.screen.blit(self.images[rows][cols], (32 * rows, 32 * cols))

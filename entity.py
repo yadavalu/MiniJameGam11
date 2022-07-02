@@ -35,14 +35,14 @@ class Entity:
 		for target in targets:
 			for collected in self.collected:
 				if target.id == collected:
-					target.rect.x = self.rect.x
-					target.rect.y = self.rect.y
+					target.move(self.rect.x + target.collection_offset[0], self.rect.y + target.collection_offset[1])
 
 	def attack(self, targets):
-		pygame.draw.rect(self.surface, (0, 0, 255), pygame.Rect(self.rect.x - (self.rect.width if self.flip else 0), self.rect.y, self.rect.width * 2, self.rect.height))
+		attack_rect = pygame.Rect(self.rect.x - (self.rect.width if self.flip else 0), self.rect.y, self.rect.width * 2, self.rect.height)
+		pygame.draw.rect(self.surface, (0, 0, 255), attack_rect)
 		
 		for target in targets:
-			if self.rect.colliderect(target.rect):
+			if attack_rect.colliderect(target.rect):
 				if isinstance(target, Object):
 					target.collected = True
 					self.collected.append(target.id)
@@ -53,19 +53,19 @@ class Entity:
 		pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
 
 class Object:
-	def __init__(self, surface, id, x, y, width=32, height=32):
+	def __init__(self, surface, id, x, y, width=32, height=32, collection_offset=(20, 20)):
 		self.surface = surface
 		self.rect = pygame.Rect(x, y, width, height)
 
 		self.id = id
 
 		self.collected = False
-		self.attacked_pos = (None, None)
+		self.collection_offset = collection_offset
 
 	def move(self, x, y):
 		self.rect.x = x
 		self.rect.y = y	
 
 	def draw(self):
-		pygame.draw.rect(self.surface, (0 if not self.collected else 255, 255, 0), self.rect)
+		pygame.draw.rect(self.surface, ((0 if not self.collected else 255), 255, 0), self.rect)
 

@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 
 
 class Entity:
@@ -16,10 +17,11 @@ class Entity:
 		self.hit = False
 
 		self.collected = []
+		self.particles = []
 
 	def move(self, targets):
 		dx, dy = 0, 0
-		vel = 16
+		vel = 4
 		keys = pygame.key.get_pressed()
 
 		if keys[pygame.K_UP]:
@@ -44,9 +46,11 @@ class Entity:
 					if self.tiles[rows][cols] == 3:
 						self.rect.x -= dx/2
 						self.rect.y -= dy/2
+						self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
 					elif self.tiles[rows][cols] == 2 or self.tiles[rows][cols] == 1:
 						self.rect.x -= dx
 						self.rect.y -= dy
+						self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
 
 		for target in targets:
 			for collected in self.collected:
@@ -70,7 +74,14 @@ class Entity:
 			self.surface.blit(pygame.transform.flip(self.image, self.flip, False), (self.rect.x, self.rect.y))
 		else:
 			pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
-			
+
+		for particle in self.particles:
+			particle[0][0] += particle[1][0]
+			particle[0][1] += particle[1][1]
+			particle[2] -= 0.1
+			pygame.draw.circle(self.surface, (255, 255, 255), particle[0], particle[2])
+			if particle[2] <= 0:
+				self.particles.remove(particle)
 
 class Object:
 	def __init__(self, surface, id, x, y, width=32, height=32, collection_offset=(20, 20)):

@@ -4,15 +4,17 @@ import spritesheet
 
 def draw_tiles(screen):
     image = pygame.image.load("gfx/tilemap.png")
-    rect = image.convert().get_rect()
+    rect = pygame.Rect(0, 0, 32, 32)
     for tile in tiles:
+        print(tile)
         match tile:
             case 0:
-                rect.top = 0
+                rect.x = 0
             case 1:
-                rect.top = 32
+                rect.x = 32
             case 2:
-                rect.top = 64
+                rect.x = 64
             case 3:
-                rect.top = 96
-        screen.blit(image, rect)
+                rect.x = 96
+        image.subsurface(rect)
+        screen.blit(image, (rect.x, rect.y))

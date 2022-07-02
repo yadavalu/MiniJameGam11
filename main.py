@@ -3,13 +3,13 @@ from entity import Entity, Object
 from tilemap import *
 
 pygame.init()
-display = pygame.display.set_mode((640, 480))
+display = pygame.display.set_mode((640, 640))
 pygame.display.set_caption("Delivery")
 
 clock = pygame.time.Clock()
 
 entity = Entity(display, 320, 320)
-transport = Object(display, 96, 96)
+transport = Object(display, "delivery", 96, 96)
 
 run = True
 while run:
@@ -19,11 +19,11 @@ while run:
             run = False
             break
 
-    entity.move()
-    transport.move(200, 200)
+    draw_tiles(display)
+    entity.move([transport])
+    transport.move(192, 192)
     entity.draw()
     transport.draw()
-    draw_tiles(display)
     pygame.display.update()
 
 pygame.quit()

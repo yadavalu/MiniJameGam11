@@ -9,10 +9,10 @@ pygame.display.set_caption("Delivery")
 
 clock = pygame.time.Clock()
 
-entity = Entity(display, 320, 320)
-transport = Object(display, "delivery", 96, 96)
 tilemap = TileMap(display, tiles, "gfx/tilemap.png")
 tilemap.load_tiles()
+entity = Entity(display, 384, 384, tilemap.tiles, tilemap.images, tilemap.imagerects)
+transport = Object(display, "delivery", 64, 64)
 
 run = True
 while run:

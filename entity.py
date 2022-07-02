@@ -2,9 +2,13 @@ import pygame
 
 
 class Entity:
-	def __init__(self, surface, x, y):
+	def __init__(self, surface, x, y, tiles, tilesimages, tileimagerects):
 		self.surface = surface
 		self.rect = pygame.Rect(x, y, 32, 32)
+
+		self.tiles = tiles
+		self.tileimages = tilesimages
+		self.tileimagerects = tileimagerects
 
 		self.flip = False
 		self.hit = False
@@ -31,6 +35,18 @@ class Entity:
 
 		self.rect.x += dx
 		self.rect.y += dy
+
+		for rows in range(len(self.tileimages)):
+			for cols in range(len(self.tileimages[rows])):
+				if self.rect.colliderect(self.tileimagerects[rows][cols]):
+					if self.tiles[rows][cols] == 3:
+						print("Box")
+						self.rect.x -= dx/2
+						self.rect.y -= dy/2
+					elif self.tiles[rows][cols] == 2 or self.tiles[rows][cols] == 1:
+						print("2, 3")
+						self.rect.x -= dx
+						self.rect.y -= dy
 
 		for target in targets:
 			for collected in self.collected:

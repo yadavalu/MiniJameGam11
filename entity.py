@@ -42,11 +42,9 @@ class Entity:
 			for cols in range(len(self.tileimages[rows])):
 				if self.rect.colliderect(self.tileimagerects[rows][cols]):
 					if self.tiles[rows][cols] == 3:
-						print("Box")
 						self.rect.x -= dx/2
 						self.rect.y -= dy/2
 					elif self.tiles[rows][cols] == 2 or self.tiles[rows][cols] == 1:
-						print("2, 3")
 						self.rect.x -= dx
 						self.rect.y -= dy
 

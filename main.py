@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 
 tilemap = TileMap(display, tiles, "gfx/tilemap.png")
 tilemap.load_tiles()
-entity = Entity(display, 384, 384, tilemap.tiles, tilemap.images, tilemap.imagerects)
+entity = Entity(display, 384, 384, pygame.image.load("gfx/delivery.png").subsurface(pygame.Rect(0, 0, 32, 32)), tilemap.tiles, tilemap.images, tilemap.imagerects)
 transport = Object(display, "delivery", 64, 64)
 
 run = True

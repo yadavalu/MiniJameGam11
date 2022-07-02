@@ -2,9 +2,11 @@ import pygame
 
 
 class Entity:
-	def __init__(self, surface, x, y, tiles, tilesimages, tileimagerects):
+	def __init__(self, surface, x, y, image, tiles, tilesimages, tileimagerects):
 		self.surface = surface
 		self.rect = pygame.Rect(x, y, 32, 32)
+
+		self.image = image
 
 		self.tiles = tiles
 		self.tileimages = tilesimages
@@ -66,7 +68,11 @@ class Entity:
 					target.hit = True
 		
 	def draw(self):
-		pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
+		if self.image is not None:
+			self.surface.blit(pygame.transform.flip(self.image, self.flip, False), (self.rect.x, self.rect.y))
+		else:
+			pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
+			
 
 class Object:
 	def __init__(self, surface, id, x, y, width=32, height=32, collection_offset=(20, 20)):

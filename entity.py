@@ -25,11 +25,17 @@ class Entity:
 		self.collected = []
 		self.particles = []
 
+<<<<<<< HEAD
+	def move_enemy(self, x, y):
+		dx = x - self.rect.x
+		dy = y - self.rect.y
+=======
 		pygame.mixer.music.load("sfx/pack.mp3")
 
 	def move_enemy(self, entity):
 		dx = entity.rect.x - self.rect.x
 		dy = entity.rect.y - self.rect.y
+>>>>>>> e81594128b72aa717c4129c5a406b9a7df72b63a
 
 		if dx < 0:
 			dx = -1
@@ -120,7 +126,7 @@ class Entity:
 					target.collected = True
 					target.scale = 0.5
 					self.collected.append(target.id)
-					pygame.mixer.music.play()
+					pygame.mixer.Channel(0).play(pygame.mixer.Sound("sfx/pack.mp3"), maxtime=600)
 				elif isinstance(target, Entity):
 					for collected in self.collected:
 						if collected == "s":

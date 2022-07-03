@@ -36,7 +36,7 @@ while run:
             break
 
     tilemap.draw_tiles()
-    entity.move([sword1, sword2, sword3, box1, box2, enemy1])
+    entity.move([sword1, sword2, sword3, box1, box2, enemy1], reciever)
     if entity.health > 0:
         entity.draw()
     sword1.draw()
@@ -45,11 +45,11 @@ while run:
     box1.draw()
     box2.draw()
     if pygame.time.get_ticks() - dt > 10:
-        enemy1.move_enemy(entity.rect.x, entity.rect.y)
-        #enemy2.move_enemy(entity.rect.x, entity.rect.y)
-        #enemy3.move_enemy(entity.rect.x, entity.rect.y)
-        #enemy4.move_enemy(entity.rect.x, entity.rect.y)
-        #enemy5.move_enemy(entity.rect.x, entity.rect.y)
+        enemy1.move_enemy(entity)
+        #enemy2.move_enemy(entity)
+        #enemy3.move_enemy(entity)
+        #enemy4.move_enemy(entity)
+        #enemy5.move_enemy(entity)
         dt = pygame.time.get_ticks()
     if enemy1.health > 0:
         enemy1.draw()

@@ -21,7 +21,7 @@ class Entity:
 
 	def move(self, targets):
 		dx, dy = 0, 0
-		vel = 4
+		vel = 1
 		keys = pygame.key.get_pressed()
 
 		if keys[pygame.K_UP]:
@@ -44,13 +44,15 @@ class Entity:
 			for cols in range(len(self.tileimages[rows])):
 				if self.rect.colliderect(self.tileimagerects[rows][cols]):
 					if self.tiles[rows][cols] == 3:
-						self.rect.x -= dx/2
-						self.rect.y -= dy/2
-						self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
-					elif self.tiles[rows][cols] == 2 or self.tiles[rows][cols] == 1:
+						pass
+					elif self.tiles[rows][cols] == 2:
 						self.rect.x -= dx
 						self.rect.y -= dy
 						self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
+					elif self.tiles[rows][cols] == 1:
+						self.rect.x += dx
+						self.rect.y += dy
+
 
 		for target in targets:
 			for collected in self.collected:
@@ -65,10 +67,11 @@ class Entity:
 			if attack_rect.colliderect(target.rect):
 				if isinstance(target, Object):
 					target.collected = True
+					target.scale = 0.5
 					self.collected.append(target.id)
 				else:
 					target.hit = True
-		
+
 	def draw(self):
 		if self.image is not None:
 			self.surface.blit(pygame.transform.flip(self.image, self.flip, False), (self.rect.x, self.rect.y))
@@ -84,19 +87,27 @@ class Entity:
 				self.particles.remove(particle)
 
 class Object:
-	def __init__(self, surface, id, x, y, width=32, height=32, collection_offset=(20, 20)):
+	def __init__(self, surface, id, x, y, width=32, height=32, image=None, collection_offset=(20, 20)):
 		self.surface = surface
 		self.rect = pygame.Rect(x, y, width, height)
 
 		self.id = id
 
+		self.image = image
+
 		self.collected = False
 		self.collection_offset = collection_offset
+
+		self.scale = 1
 
 	def move(self, x, y):
 		self.rect.x = x
 		self.rect.y = y	
 
 	def draw(self):
-		pygame.draw.rect(self.surface, ((0 if not self.collected else 255), 255, 0), self.rect)
+		if self.image is None: 
+			pygame.draw.rect(self.surface, ((0 if not self.collected else 255), 255, 0), self.rect)
+		else:
+			self.surface.blit(pygame.transform.scale(self.image, (32 * self.scale, 32 * self.scale)), (self.rect.x, self.rect.y))
+
 

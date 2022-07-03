@@ -10,7 +10,9 @@ class TileMap:
         self.rect = pygame.Rect(0, 0, 32, 32)
         self.tiles = tiles
 
-    def load_tiles(self):
+    def load_tiles(self, tiles=None):
+        if tiles is not None:
+            self.tiles = tiles
         for rows in range(len(self.tiles)):
             temp_images = []
             temp_rects = []

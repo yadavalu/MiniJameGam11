@@ -3,7 +3,7 @@ from random import randint
 
 
 class Entity:
-	def __init__(self, surface, x, y, image, tiles, tilesimages, tileimagerects):
+	def __init__(self, surface, x, y, image, tiles, tilesimages, tileimagerects, is_enemy=False):
 		self.surface = surface
 		self.rect = pygame.Rect(x, y, 32, 32)
 
@@ -16,8 +16,29 @@ class Entity:
 		self.flip = False
 		self.hit = False
 
+		self.enemy = is_enemy
+
+		self.health = 100
+
 		self.collected = []
 		self.particles = []
+
+	def move_enemy(self, x, y):
+		dx = x - self.rect.x
+		dy = y - self.rect.y
+
+		if dx < 0:
+			dx = -1
+		else:
+			dx = 1
+
+		if dy < 0:
+			dy = -1
+		else:
+			dy = 1
+
+		self.rect.x += dx
+		self.rect.y += dy
 
 	def move(self, targets):
 		dx, dy = 0, 0
@@ -82,22 +103,27 @@ class Entity:
 					target.collected = True
 					target.scale = 0.5
 					self.collected.append(target.id)
-				else:
-					target.hit = True
+				elif isinstance(target, Entity):
+					if not target.enemy:
+						self.health -= 10
+					else:
+						if not self.enemy:
+							target.health -= 10
 
 	def draw(self):
-		if self.image is not None:
-			self.surface.blit(pygame.transform.flip(self.image, self.flip, False), (self.rect.x, self.rect.y))
-		else:
-			pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
+		if self.health != 0:
+			if self.image is not None:
+				self.surface.blit(pygame.transform.flip(self.image, self.flip, False), (self.rect.x, self.rect.y))
+			else:
+				pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
 
-		for particle in self.particles:
-			particle[0][0] += particle[1][0]
-			particle[0][1] += particle[1][1]
-			particle[2] -= 0.1
-			pygame.draw.circle(self.surface, (255, 255, 255), particle[0], particle[2])
-			if particle[2] <= 0:
-				self.particles.remove(particle)
+			for particle in self.particles:
+				particle[0][0] += particle[1][0]
+				particle[0][1] += particle[1][1]
+				particle[2] -= 0.1
+				pygame.draw.circle(self.surface, (255, 255, 255), particle[0], particle[2])
+				if particle[2] <= 0:
+					self.particles.remove(particle)
 
 class Object:
 	def __init__(self, surface, id, x, y, width=32, height=32, image=None, collection_offset=(20, 20)):

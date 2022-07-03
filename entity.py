@@ -16,6 +16,8 @@ class Entity:
 		self.flip = False
 		self.hit = False
 
+		self.id = None
+
 		self.enemy = is_enemy
 
 		self.health = 100
@@ -23,9 +25,17 @@ class Entity:
 		self.collected = []
 		self.particles = []
 
+<<<<<<< HEAD
 	def move_enemy(self, x, y):
 		dx = x - self.rect.x
 		dy = y - self.rect.y
+=======
+		pygame.mixer.music.load("sfx/pack.mp3")
+
+	def move_enemy(self, entity):
+		dx = entity.rect.x - self.rect.x
+		dy = entity.rect.y - self.rect.y
+>>>>>>> e81594128b72aa717c4129c5a406b9a7df72b63a
 
 		if dx < 0:
 			dx = -1
@@ -40,7 +50,11 @@ class Entity:
 		self.rect.x += dx
 		self.rect.y += dy
 
-	def move(self, targets):
+		if self.rect.colliderect(entity.rect):
+			entity.health -= 1
+
+
+	def move(self, targets, reciever):
 		dx, dy = 0, 0
 		vel = 1
 		keys = pygame.key.get_pressed()
@@ -56,7 +70,7 @@ class Entity:
 			dx = -vel
 			self.flip = True
 		if keys[pygame.K_SPACE]:
-			self.attack(targets)
+			self.attack(targets, reciever)
 
 		self.rect.x += dx
 		self.rect.y += dy
@@ -94,9 +108,16 @@ class Entity:
 					if target.id == collected:
 						target.move(self.rect.x + target.collection_offset[0], self.rect.y + target.collection_offset[1])
 
-	def attack(self, targets):
+	def attack(self, targets, reciever):
 		attack_rect = pygame.Rect(self.rect.x - (self.rect.width if self.flip else 0), self.rect.y, self.rect.width * 2, self.rect.height)
 		pygame.draw.rect(self.surface, (0, 0, 255), attack_rect)
+
+		if attack_rect.colliderect(reciever.rect):
+			for target in targets:
+				for collected in self.collected:
+					if target.id == collected:
+						target.scale = 1
+						self.collected.remove(collected)
 		
 		for target in targets:
 			if attack_rect.colliderect(target.rect):
@@ -106,11 +127,13 @@ class Entity:
 					self.collected.append(target.id)
 					pygame.mixer.Channel(0).play(pygame.mixer.Sound("sfx/pack.mp3"), maxtime=600)
 				elif isinstance(target, Entity):
-					if not target.enemy:
-						self.health -= 10
-					else:
-						if not self.enemy:
-							target.health -= 10
+					for collected in self.collected:
+						if collected == "s":
+							if not target.enemy:
+								self.health -= 10
+							else:
+								if not self.enemy:
+									target.health -= 10
 
 	def draw(self, healthbar=True):
 		if self.image is not None:

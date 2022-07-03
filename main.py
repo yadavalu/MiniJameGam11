@@ -60,7 +60,7 @@ while run:
         sword3.draw()
         box1.draw()
         box2.draw()
-        if pygame.time.get_ticks() - dt > 10:
+        if pygame.time.get_ticks() - dt > 30:
             enemy1.move_enemy(entity)
             enemy2.move_enemy(entity)
             enemy3.move_enemy(entity)

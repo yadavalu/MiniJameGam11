@@ -40,6 +40,19 @@ class Entity:
 		self.rect.x += dx
 		self.rect.y += dy
 
+		if self.rect.y < 0:
+			self.rect.y = 0
+			self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
+		if self.rect.y + self.rect.height > self.surface.get_height():
+			self.rect.y = self.surface.get_height() - self.rect.height
+			self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
+		if self.rect.x < 0:
+			self.rect.x = 0
+			self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
+		if self.rect.x + self.rect.width > self.surface.get_width():
+			self.rect.x = self.surface.get_width() - self.rect.width
+			self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
+
 		for rows in range(len(self.tileimages)):
 			for cols in range(len(self.tileimages[rows])):
 				if self.rect.colliderect(self.tileimagerects[rows][cols]):
@@ -49,7 +62,7 @@ class Entity:
 						self.rect.x -= dx
 						self.rect.y -= dy
 						self.particles.append([[self.rect.centerx, self.rect.centery], [randint(0, 20) / 10 - 1, 0.5], randint(4, 6)])
-					elif self.tiles[rows][cols] == 1:
+					elif self.tiles[rows][cols] == 0:
 						self.rect.x += dx
 						self.rect.y += dy
 

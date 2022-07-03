@@ -25,9 +25,9 @@ class Entity:
 		self.collected = []
 		self.particles = []
 
-	def move_enemy(self, x, y):
-		dx = x - self.rect.x
-		dy = y - self.rect.y
+	def move_enemy(self, entity):
+		dx = entity.rect.x - self.rect.x
+		dy = entity.rect.y - self.rect.y
 		pygame.mixer.music.load("sfx/pack.mp3")
 
 		if dx < 0:
@@ -109,7 +109,6 @@ class Entity:
 			for target in targets:
 				for collected in self.collected:
 					if target.id == collected:
-						print(True)
 						target.scale = 1
 						self.collected.remove(collected)
 		

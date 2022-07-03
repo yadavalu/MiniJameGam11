@@ -13,14 +13,10 @@ pygame.mixer.init()
 display = pygame.display.set_mode((640, 640))
 pygame.display.set_caption("Delivery")
 
-def LoopSound():
-    pygame.mixer.music.load("sfx/bgm.mp3")
-    pygame.mixer.music.set_volume(0.3)
-    pygame.mixer.music.play(-1, 0, 0)
+pygame.mixer.music.load("sfx/bgm.mp3")
+pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.play(-1, 0, 0)
 
-loopThread = threading.Thread(target=LoopSound, name="bgm")
-loopThread.daemon = True
-loopThread.start()
 
 clock = pygame.time.Clock()
 

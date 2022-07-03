@@ -92,8 +92,9 @@ class Entity:
 
 		for target in targets:
 			for collected in self.collected:
-				if target.id == collected:
-					target.move(self.rect.x + target.collection_offset[0], self.rect.y + target.collection_offset[1])
+				if isinstance(target, Object):
+					if target.id == collected:
+						target.move(self.rect.x + target.collection_offset[0], self.rect.y + target.collection_offset[1])
 
 	def attack(self, targets):
 		attack_rect = pygame.Rect(self.rect.x - (self.rect.width if self.flip else 0), self.rect.y, self.rect.width * 2, self.rect.height)
@@ -113,20 +114,23 @@ class Entity:
 						if not self.enemy:
 							target.health -= 10
 
-	def draw(self):
-		if self.health != 0:
-			if self.image is not None:
-				self.surface.blit(pygame.transform.flip(self.image, self.flip, False), (self.rect.x, self.rect.y))
-			else:
-				pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
+	def draw(self, healthbar=True):
+		if self.image is not None:
+			self.surface.blit(pygame.transform.flip(self.image, self.flip, False), (self.rect.x, self.rect.y))
+		else:
+			pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
 
-			for particle in self.particles:
-				particle[0][0] += particle[1][0]
-				particle[0][1] += particle[1][1]
-				particle[2] -= 0.1
-				pygame.draw.circle(self.surface, (255, 255, 255), particle[0], particle[2])
-				if particle[2] <= 0:
-					self.particles.remove(particle)
+		for particle in self.particles:
+			particle[0][0] += particle[1][0]
+			particle[0][1] += particle[1][1]
+			particle[2] -= 0.1
+			pygame.draw.circle(self.surface, (255, 255, 255), particle[0], particle[2])
+			if particle[2] <= 0:
+				self.particles.remove(particle)
+
+		if healthbar:
+			pygame.draw.rect(self.surface, (200, 200, 200), pygame.Rect(self.rect.x, self.rect.y, 20, 5))
+			pygame.draw.rect(self.surface, (255 if self.health < 50 else 0, 255 if self.health >= 30 else 0, 0), pygame.Rect(self.rect.x, self.rect.y, 0.2*self.health, 5))
 
 class Object:
 	def __init__(self, surface, id, x, y, width=32, height=32, image=None, collection_offset=(20, 20)):

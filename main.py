@@ -22,6 +22,7 @@ enemy5 = Entity(display, randint(0, display.get_width() - 32), randint(0, displa
 transport = Object(display, "delivery", 64, 64)
 box1 = Object(display, "1", randint(0, 19) * 32, randint(0, 19) * 32, image=pygame.image.load("gfx/tilemap.png").subsurface(96, 0, 32, 32), collection_offset=(20, 0))
 box2 = Object(display, "2", randint(0, 19) * 32, randint(0, 19) * 32, image=pygame.image.load("gfx/tilemap.png").subsurface(96, 0, 32, 32), collection_offset=(0, 20))
+reciever = Entity(display, 32 * round(randint(0, display.get_width() - 32) / 32), 32 * round(randint(0, display.get_height() - 32) / 32), pygame.image.load("gfx/delivery.png").subsurface(pygame.Rect(96, 0, 32, 32)), tilemap.tiles, tilemap.images, tilemap.imagerects)
 
 run = True
 dt = pygame.time.get_ticks()
@@ -50,6 +51,7 @@ while run:
     enemy3.draw()
     enemy4.draw()
     enemy5.draw()
+    reciever.draw()
     pygame.display.update()
 
 pygame.quit()

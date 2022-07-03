@@ -110,6 +110,7 @@ class Entity:
 			for target in targets:
 				for collected in self.collected:
 					if target.id == collected:
+						print(True)
 						target.scale = 1
 						self.collected.remove(collected)
 		
@@ -124,10 +125,10 @@ class Entity:
 					for collected in self.collected:
 						if collected == "s":
 							if not target.enemy:
-								self.health -= 10
+								self.health -= 1
 							else:
 								if not self.enemy:
-									target.health -= 10
+									target.health -= 1
 
 	def draw(self, healthbar=True):
 		if self.image is not None:
